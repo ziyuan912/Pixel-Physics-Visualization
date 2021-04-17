@@ -1,20 +1,79 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>TEST</title>
+        <title>Pixel Physics Visualization</title>
     </head>
     <body>
+        <h3>Pixel Physics Visualization</h3>
+        <div id="main"></div>
         <script language="javascript" type="text/javascript">
-            var samplename = 17;
             var baseurl = "https://ziyuan912.github.io/Pixel-Physics-Visualization/src/"
-            for (var i=0; i < samplename; i++) {
+            
+            // create table
+            var samplenum = 16;
+            
+            for (var i=0; i < samplenum; i++) {
+                document.write("<table>");
                 document.write("<tr>");
                 document.write("<td><iframe src='" +baseurl+"gt/gt_"+(i * 50).toString()+".mp4'>gt</iframe></td>");
-                document.write("<td><iframe src='" +baseurl+"pp/TEST_grey_"+(i * 50).toString()+".mp4'></iframe></td>");
+                document.write("<td><iframe src='" +baseurl+"pp/test_"+(i * 50).toString()+".mp4'></iframe></td>");
                 document.write("<td><iframe src='" +baseurl+"Controllable/test_"+(i * 50).toString()+".mp4'>TEST</iframe></td>");
                 document.write("</tr>");
-                document.write("</br>");
+                document.write("</table>");
+
+                document.write("<table style='border: solid;'>");
+                document.write("<th>Method</th><th>PSNR</th><th>SSIM</th><th>LPIPS</th>")
+                document.write("<tr>");
+                document.write("<td>2D baseline</td>")
+                document.write("<td id=controllable_" + (i * 3).toString() + "></td>");
+                document.write("<td id=controllable_" + (i * 3 + 1).toString() + "></td>");
+                document.write("<td id=controllable_" + (i * 3 + 2).toString() + "></td>");
+                document.write("</tr>");
+                document.write("<tr>");
+                document.write("<td>Ours</td>")
+                document.write("<td id=pp_" + (i * 3).toString() + "></td>");
+                document.write("<td id=pp_" + (i * 3 + 1).toString() + "></td>");
+                document.write("<td id=pp_" + (i * 3 + 2).toString() + "></td>");
+                document.write("</tr>");
+                document.write("</table>");
             }
+            document.write("</table>");
+
+            function write_controllable_content(){
+                if(controllable_reader.readyState==4){
+                    controllable_result = controllable_reader.responseText.split(" ");
+                    for (var i=0; i < controllable_result.length; i++){
+                        element = document.getElementById("controllable_" + i.toString());
+                        element.innerHTML = controllable_result[i];
+                    }
+                }
+            }
+            function write_pp_content(){
+                if(pp_reader.readyState==4){
+                    pp_result = pp_reader.responseText.split(" ");
+                    for (var i=0; i < pp_result.length; i++){
+                        element = document.getElementById("pp_" + i.toString());
+                        element.innerHTML = pp_result[i];
+                    }
+                }
+            }
+
+            // write controllable file
+            var controllable_txt = baseurl + "Controllable/result.txt";
+            var controllable_reader = new XMLHttpRequest() || new ActiveXObject('MSXML2.XMLHTTP');
+            controllable_reader.open('get', controllable_txt, true); 
+            controllable_reader.onreadystatechange = write_controllable_content;
+            controllable_reader.send(null);
+
+            // write pp file
+            var pp_txt = baseurl + "pp/result.txt";
+            var pp_reader = new XMLHttpRequest() || new ActiveXObject('MSXML2.XMLHTTP');
+            pp_reader.open('get', pp_txt, true); 
+            pp_reader.onreadystatechange = write_pp_content;
+            pp_reader.send(null);
+
+
+
         </script>
     </body>
 </html>
