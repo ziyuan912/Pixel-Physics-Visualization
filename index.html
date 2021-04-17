@@ -4,14 +4,16 @@
         <title>TEST</title>
     </head>
     <body>
-        <iframe src="https://ziyuan912.github.io/Pixel-Physics-Visualization/src/pp/TEST_grey_0.mp4">TEST</iframe>
         <script language="javascript" type="text/javascript">
-            for (var a=0; a < 10; a++) {
+            var samplename = 17;
+            var baseurl = "https://ziyuan912.github.io/Pixel-Physics-Visualization/src/"
+            for (var i=0; i < samplename; i++) {
                 document.write("<tr>");
-                for(var b=0; b<3; b++) {
-                    document.write("<td>"+(a*b)+"</td>");
-                }
+                document.write("<td><iframe src='" +baseurl+"gt/gt_"+(i * 50).toString()+".mp4'>gt</iframe></td>");
+                document.write("<td><iframe src='" +baseurl+"pp/TEST_grey_"+(i * 50).toString()+".mp4'></iframe></td>");
+                document.write("<td><iframe src='" +baseurl+"Controllable/test_"+(i * 50).toString()+".mp4'>TEST</iframe></td>");
                 document.write("</tr>");
+                document.write("</br>");
             }
         </script>
     </body>
