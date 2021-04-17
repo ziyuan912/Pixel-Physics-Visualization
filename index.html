@@ -2,9 +2,15 @@
 <html>
     <head>
         <title>Pixel Physics Visualization</title>
+        <style>
+            table, th, td {
+              border: 1px solid black;
+              border-collapse: collapse;
+            }
+        </style>
     </head>
     <body>
-        <h3>Pixel Physics Visualization</h3>
+        <h1>Pixel Physics Visualization</h1>
         <div id="main"></div>
         <script language="javascript" type="text/javascript">
             var baseurl = "https://ziyuan912.github.io/Pixel-Physics-Visualization/src/"
@@ -13,6 +19,8 @@
             var samplenum = 16;
             
             for (var i=0; i < samplenum; i++) {
+                document.write("<h3>sample " + (i + 1).toString() + "</h3>")
+
                 document.write("<table>");
                 document.write("<tr>");
                 document.write("<td><iframe src='" +baseurl+"gt/gt_"+(i * 50).toString()+".mp4'>gt</iframe></td>");
@@ -21,7 +29,7 @@
                 document.write("</tr>");
                 document.write("</table>");
 
-                document.write("<table style='border: solid;'>");
+                document.write("<table>");
                 document.write("<th>Method</th><th>PSNR</th><th>SSIM</th><th>LPIPS</th>")
                 document.write("<tr>");
                 document.write("<td>2D baseline</td>")
@@ -29,6 +37,9 @@
                 document.write("<td id=controllable_" + (i * 3 + 1).toString() + "></td>");
                 document.write("<td id=controllable_" + (i * 3 + 2).toString() + "></td>");
                 document.write("</tr>");
+                
+                document.write("</br>")
+
                 document.write("<tr>");
                 document.write("<td>Ours</td>")
                 document.write("<td id=pp_" + (i * 3).toString() + "></td>");
@@ -36,13 +47,16 @@
                 document.write("<td id=pp_" + (i * 3 + 2).toString() + "></td>");
                 document.write("</tr>");
                 document.write("</table>");
+
+                document.write("</br>")
             }
             document.write("</table>");
-
+        
             function write_controllable_content(){
                 if(controllable_reader.readyState==4){
                     controllable_result = controllable_reader.responseText.split(" ");
-                    for (var i=0; i < controllable_result.length; i++){
+                    console.log(controllable_result.length);
+                    for (var i=0; i < controllable_result.length - 1; i++){
                         element = document.getElementById("controllable_" + i.toString());
                         element.innerHTML = controllable_result[i];
                     }
@@ -51,7 +65,7 @@
             function write_pp_content(){
                 if(pp_reader.readyState==4){
                     pp_result = pp_reader.responseText.split(" ");
-                    for (var i=0; i < pp_result.length; i++){
+                    for (var i=0; i < pp_result.length - 1; i++){
                         element = document.getElementById("pp_" + i.toString());
                         element.innerHTML = pp_result[i];
                     }
@@ -64,7 +78,7 @@
             controllable_reader.open('get', controllable_txt, true); 
             controllable_reader.onreadystatechange = write_controllable_content;
             controllable_reader.send(null);
-
+            
             // write pp file
             var pp_txt = baseurl + "pp/result.txt";
             var pp_reader = new XMLHttpRequest() || new ActiveXObject('MSXML2.XMLHTTP');
