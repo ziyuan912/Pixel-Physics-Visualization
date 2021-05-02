@@ -41,11 +41,18 @@ def combineVideo(vids, idx):
 
 if __name__ == '__main__':
 	vidpath = []
-	vidpath.append(sorted(glob("./gt/gt_*")))
-	for i in range(5):
+	pathnum = glob("./gt/gt_*")
+	# vidpath.append(sorted(glob("./gt/gt_*")))
+	nums = []
+	for file in pathnum:
+		num = int(file.split('gt_')[-1][:-4])
+		nums.append(num)
+		nums.sort()
+	print(nums)
+	for i in range(6):
 		vidpath.append([])
-	for vid in vidpath[0]:
-		num = vid.split('gt_')[-1][:-4]
+	for num in nums:
+		vidpath[0].append(f"./gt/gt_{num}.mp4")
 		vidpath[1].append(f"./pp/test_{num}.mp4")
 		vidpath[2].append(f"./Controllable/test_{num}.mp4")
 		vidpath[3].append(f"./pose/pose_{num}.mp4")
