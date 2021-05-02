@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Pixel Physics Visualization</title>
+        <style>
+            table, th, td {
+              border: 1px solid black;
+              border-collapse: collapse;
+            }
+        </style>
+    </head>
+    <body>
+        <h1>Pixel Physics Visualization</h1>
+
+        <h3>Total Result</h3>
+        <table width=50% style='text-align:center'>
+            <th>Method</th><th>PSNR</th><th>SSIM</th><th>LPIPS</th>
+            <tr>
+                <td> 2D baseline </td><td> 22.071 </td><td> 0.781 </td><td> 0.148 </td>
+            </tr>
+            <tr>
+                <td> Ours </td><td> 20.142 </td><td> 0.723 </td><td> 0.175 </td>
+            </tr>
+        </table>
+        <script language="javascript" type="text/javascript">
+            var baseurl = "https://ziyuan912.github.io/Pixel-Physics-Visualization/src/"
+            // var baseurl = "./src/"
+            
+            // create table
+            var samplenum = 16;
+            
+            for (var i=0; i < samplenum; i++) {
+                document.write("<h3>sample " + (i + 1).toString() + "</h3>")
+
+                document.write("<table>");
+                document.write("<th>ground truth</th><th>Ours</th><th>2D baseline</th><th>predicted keypoints</th>")
+                document.write("<tr>");
+                document.write("<td><video width='320' height='240' controls><source src='" +baseurl+"gt/gt_"+(i * 50).toString()+".mp4'></video></td>");
+                document.write("<td><video width='320' height='240' controls><source src='" +baseurl+"pp/test_"+(i * 50).toString()+".mp4'></video></td>");
+                document.write("<td><video width='320' height='240' controls><source src='" +baseurl+"Controllable/test_"+(i * 50).toString()+".mp4'></video></td>");
+                document.write("<td><video width='320' height='240' controls><source src='" +baseurl+"pose/pose_"+(i * 50).toString()+".mp4'></video></td>");
+                document.write("</tr>");
+                document.write("</table>");
+
+                document.write("<table width=50% style='text-align:center'>");
+                document.write("<th>Method</th><th>PSNR</th><th>SSIM</th><th>LPIPS</th>")
+                document.write("<tr>");
+                document.write("<td> 2D baseline </td>")
+                document.write("<td id=controllable_" + (i * 3).toString() + "></td>");
+                document.write("<td id=controllable_" + (i * 3 + 1).toString() + "></td>");
+                document.write("<td id=controllable_" + (i * 3 + 2).toString() + "></td>");
+                document.write("</tr>");
+                
+                document.write("</br>")
+
+                document.write("<tr>");
+                document.write("<td> Ours </td>")
+                document.write("<td id=pp_" + (i * 3).toString() + "></td>");
+                document.write("<td id=pp_" + (i * 3 + 1).toString() + "></td>");
+                document.write("<td id=pp_" + (i * 3 + 2).toString() + "></td>");
+                document.write("</tr>");
+                document.write("</table>");
+
+                document.write("</br>")
+            }
+            document.write("</table>");
+        
+            function write_controllable_content(){
+                if(controllable_reader.readyState==4){
+                    controllable_result = controllable_reader.responseText.split(" ");
+                    console.log(controllable_result.length);
+                    for (var i=0; i < controllable_result.length - 1; i++){
+                        element = document.getElementById("controllable_" + i.toString());
+                        controllable_result[i] = parseFloat(controllable_result[i]).toFixed(3).toString();
+                        element.innerHTML = controllable_result[i];
+                    }
+                }
+            }
+            function write_pp_content(){
+                if(pp_reader.readyState==4){
+                    pp_result = pp_reader.responseText.split(" ");
+                    for (var i=0; i < pp_result.length - 1; i++){
+                        element = document.getElementById("pp_" + i.toString());
+                        pp_result[i] = parseFloat(pp_result[i]).toFixed(3).toString();
+                        element.innerHTML = pp_result[i];
+                    }
+                }
+            }
+
+            // write controllable file
+            var controllable_txt = baseurl + "Controllable/result.txt";
+            var controllable_reader = new XMLHttpRequest() || new ActiveXObject('MSXML2.XMLHTTP');
+            controllable_reader.open('get', controllable_txt, true); 
+            controllable_reader.onreadystatechange = write_controllable_content;
+            controllable_reader.send(null);
+            
+            // write pp file
+            var pp_txt = baseurl + "pp/result.txt";
+            var pp_reader = new XMLHttpRequest() || new ActiveXObject('MSXML2.XMLHTTP');
+            pp_reader.open('get', pp_txt, true); 
+            pp_reader.onreadystatechange = write_pp_content;
+            pp_reader.send(null);
+
+
+
+        </script>
+    </body>
+</html>
