@@ -17,12 +17,25 @@
             
             // create table
             var samplenum = 10;
-            
+            document.write("<h2>single direction sample</h2>")
             for (var i=0; i < samplenum; i++) {
                 document.write("<h3>sample " + (i + 1).toString() + "</h3>")
 
                 document.write("<table>");
                 document.write("<td><video width='480' height='480' controls><source src='" +baseurl+"3d_augmentation/output/output"+(i).toString()+".mp4'></video></td>");
+                document.write("</table>");
+
+                document.write("</br>")
+            }
+            document.write("</table>");
+
+            var samplenum = 4;
+            document.write("<h2>Multi-direction sample</h2>")
+            for (var i=0; i < samplenum; i++) {
+                document.write("<h3>sample " + (i + 1).toString() + "</h3>")
+
+                document.write("<table>");
+                document.write("<td><video width='480' height='480' controls><source src='" +baseurl+"3d_augmentation/output/output"+(i + 10).toString()+".mp4'></video></td>");
                 document.write("</table>");
 
                 document.write("</br>")
