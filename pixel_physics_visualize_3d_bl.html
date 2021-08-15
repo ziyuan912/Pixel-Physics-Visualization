@@ -31,10 +31,10 @@
             
             for (var i=0; i < samplenum; i++) {
                 document.write("<h3>sample " + (i + 1).toString() + "</h3>")
-                document.write("<h1> 1st column: ground truth; 2nd column: Ours; 3rd column: 3D baseline")
+                document.write("<h3> 1st column: ground truth; 2nd column: Ours; 3rd column: 3D baseline</h3>")
 
                 document.write("<table>");
-                document.write("<td><video width='672' height='672' controls><source src='" +baseurl+"output_3d/output"+(i).toString()+".mp4'></video></td>");
+                document.write("<td><video width='672' height='400' controls><source src='" +baseurl+"output_3d/output"+(i).toString()+".mp4'></video></td>");
                 document.write("</table>");
 
                 document.write("<table width=50% style='text-align:center'>");
@@ -85,14 +85,14 @@
             }
 
             // write controllable file
-            var controllable_txt = baseurl + "yellow_output/3d_result.txt";
+            var controllable_txt = baseurl + "output_3d/3d_result.txt";
             var controllable_reader = new XMLHttpRequest() || new ActiveXObject('MSXML2.XMLHTTP');
             controllable_reader.open('get', controllable_txt, true); 
             controllable_reader.onreadystatechange = write_3d_content;
             controllable_reader.send(null);
             
             // write pp file
-            var pp_txt = baseurl + "yellow_output/pp_result.txt";
+            var pp_txt = baseurl + "output_3d/pp_result.txt";
             var pp_reader = new XMLHttpRequest() || new ActiveXObject('MSXML2.XMLHTTP');
             pp_reader.open('get', pp_txt, true); 
             pp_reader.onreadystatechange = write_pp_content;
